@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沉浸式旅游体验与当代青年吸引力研究</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Tailwind Configuration with Spring Art Palette -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#cce892',
+                        secondary: '#ffffe9',
+                        accent: '#aacb74',
+                        pink: {
+                            light: '#fed5d6',
+                            DEFAULT: '#fed5d6',
+                            dark: '#f5c0c1',
+                            soft: '#fef5f6'
+                        },
+                        warm: {
+                            bg: '#faf8f3',
+                            card: '#ffffff',
+                            text: '#4a5568',
+                            heading: '#2d3748'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        serif: ['Georgia', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-warm-bg text-warm-text">
+    <div id="app">
+        <!-- Navigation Bar - Elegant Style -->
+        <nav class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-md z-50 nav-bar-elegant">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex-shrink-0 flex items-center">
+                        <h1 class="text-xl font-bold text-warm-heading">沉浸式旅游研究</h1>
+                    </div>
+                    
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex space-x-8">
+                        <a v-for="item in navItems" 
+                           :key="item.id"
+                           @click="currentPage = item.id"
+                           :class="[
+                               'px-3 py-2 rounded-md text-sm font-medium cursor-pointer transition-all duration-300 nav-link-elegant',
+                               currentPage === item.id ? 'text-white bg-accent' : 'text-warm-heading hover:text-accent hover:bg-primary/20'
+                           ]">
+                            {{ item.name }}
+                        </a>
+                    </div>
+                    
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden">
+                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-warm-heading p-2">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                                <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-primary/30">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a v-for="item in navItems" 
+                       :key="item.id"
+                       @click="currentPage = item.id; mobileMenuOpen = false"
+                       :class="[
+                           'block px-3 py-2 rounded-md text-base font-medium cursor-pointer transition-colors',
+                           currentPage === item.id ? 'text-white bg-accent' : 'text-warm-heading hover:text-accent hover:bg-primary/20'
+                       ]">
+                        {{ item.name }}
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area with padding for fixed navbar -->
+        <main class="pt-16">
+            
+            <!-- Home Page -->
+            <div v-if="currentPage === 'home'" class="home-page">
+                
+                <!-- Hero Banner Section - Large Background Image Style (like Image 2) -->
+                <section class="hero-banner relative overflow-hidden hero-section-artistic">
+                    <!-- Full-width Background Image -->
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&h=900&fit=crop" 
+                             alt="Travel Landscape" 
+                             class="w-full h-full object-cover hero-bg-image">
+                        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50 hero-overlay"></div>
+                    </div>
+                    
+                    <!-- Centered Content -->
+                    <div class="relative z-10 max-w-4xl mx-auto px-4 py-32 md:py-40 text-center hero-content-centered">
+                        <p class="text-lg md:text-xl text-white/90 mb-4 tracking-wide hero-subtitle">以河南各类主题景区为例</p>
+                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight hero-title-main">
+                            沉浸式旅游体验<br>
+                            如何吸引当代青年
+                        </h1>
+                        
+                        <!-- Decorative Divider -->
+                        <div class="flex justify-center items-center mb-8 hero-divider">
+                            <div class="w-12 h-px bg-pink-light"></div>
+                            <span class="mx-4 text-white/60 text-xs tracking-widest">ACADEMIC RESEARCH</span>
+                            <div class="w-12 h-px bg-primary"></div>
+                        </div>
+                        
+                        <p class="text-base md:text-lg text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed hero-description">
+                            从空间生产、沉浸维度与青年认同三大视角，解析沉浸式旅游吸引青年的内在逻辑
+                        </p>
+                        
+                        <button @click="currentPage = 'topics'" 
+                                class="px-10 py-3 bg-accent text-white font-medium rounded-full shadow-lg hover:bg-opacity-90 transform hover:-translate-y-0.5 transition-all duration-300 cta-button-elegant">
+                            开始探索
+                        </button>
+                    </div>
+                    
+                    <!-- Scroll Indicator -->
+                    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 scroll-indicator">
+                        <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
+                            <div class="w-1 h-3 bg-white/70 rounded-full animate-bounce"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Introduction Section - Two Column with Image (like Image 2 style) -->
+                <section class="intro-section-artistic py-20 px-4 bg-secondary">
+                    <div class="max-w-6xl mx-auto">
+                        <!-- Section Title with Decorative Symbol -->
+                        <div class="text-center mb-16 section-header-decorated">
+                            <h2 class="text-3xl md:text-4xl font-bold text-warm-heading mb-3 section-title-elegant">关于本研究</h2>
+                            <div class="flex justify-center items-center space-x-3 title-decoration">
+                                <div class="w-16 h-px bg-primary"></div>
+                                <svg class="w-5 h-5 text-pink-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                                </svg>
+                                <div class="w-16 h-px bg-pink-light"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center intro-grid-elegant">
+                            <!-- Image Side -->
+                            <div class="relative image-container-elegant">
+                                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&h=600&fit=crop" 
+                                     alt="Travel Experience" 
+                                     class="rounded-lg shadow-xl w-full h-auto object-cover featured-image-large">
+                                <div class="absolute -bottom-4 -right-4 bg-accent text-white px-6 py-3 rounded shadow-lg image-badge">
+                                    <p class="text-sm font-semibold">2026 学术研究</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Text Content Side -->
+                            <div class="content-side-elegant">
+                                <h3 class="text-2xl font-bold text-warm-heading mb-6 content-subtitle">主题导语</h3>
+                                <p class="text-base leading-loose text-warm-text mb-6 content-paragraph">
+                                    本网站以沉浸式旅游体验对当代青年的吸引力为核心议题，以河南主题景区与旅游演艺为实证场景，依托空间生产理论与沉浸体验形成机制，结合真实学术文献、官方数据与景区案例，从空间生产、沉浸维度、青年认同三大可评估视角，解析沉浸式旅游吸引青年的内在逻辑与实践路径，为文旅研究与地方发展提供参考。
+                                </p>
+                                
+                                <div class="bg-pink-soft border-l-4 border-pink-light p-6 rounded-r-lg quote-block">
+                                    <p class="text-warm-text italic text-base leading-relaxed">
+                                        "沉浸式旅游正在重新定义青年一代的旅行方式"
+                                    </p>
+                                </div>
+                                
+                                <div class="mt-8 flex flex-wrap gap-3 tag-container">
+                                    <span class="px-4 py-2 bg-primary/30 text-accent text-sm rounded-full tag-item">空间生产</span>
+                                    <span class="px-4 py-2 bg-pink-light/40 text-warm-heading text-sm rounded-full tag-item">沉浸体验</span>
+                                    <span class="px-4 py-2 bg-accent/20 text-warm-heading text-sm rounded-full tag-item">青年认同</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Core Questions Section - Clean Card Layout -->
+                <section class="questions-section-elegant py-20 px-4 bg-white">
+                    <div class="max-w-6xl mx-auto">
+                        <!-- Section Title -->
+                        <div class="text-center mb-16 section-header-decorated">
+                            <h2 class="text-3xl md:text-4xl font-bold text-warm-heading mb-3 section-title-elegant">核心研究问题</h2>
+                            <div class="flex justify-center items-center space-x-3 title-decoration">
+                                <div class="w-16 h-px bg-accent"></div>
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div class="w-16 h-px bg-pink-light"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 questions-grid-elegant">
+                            <!-- Question Card 1 -->
+                            <div class="bg-secondary rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow duration-300 question-card-elegant">
+                                <div class="flex items-start gap-4 question-content-wrapper">
+                                    <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-pink-light to-pink-dark rounded-full flex items-center justify-center question-number-circle">
+                                        <span class="text-white font-bold text-lg">01</span>
+                                    </div>
+                                    <div class="flex-1 question-text-content">
+                                        <h3 class="text-xl font-bold text-warm-heading mb-4 question-title-text">沉浸体验形成机制</h3>
+                                        <p class="text-base leading-relaxed text-warm-text question-description">
+                                            河南主题景区（尤其是旅游演艺类）的沉浸体验形成机制是什么？
+                                        </p>
+                                        <div class="mt-6 pt-4 border-t border-primary/20 question-footer">
+                                            <span class="text-sm text-accent font-medium question-tag-text">核心议题</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question Card 2 -->
+                            <div class="bg-secondary rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow duration-300 question-card-elegant">
+                                <div class="flex items-start gap-4 question-content-wrapper">
+                                    <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center question-number-circle">
+                                        <span class="text-white font-bold text-lg">02</span>
+                                    </div>
+                                    <div class="flex-1 question-text-content">
+                                        <h3 class="text-xl font-bold text-warm-heading mb-4 question-title-text">青年沉浸激发机制</h3>
+                                        <p class="text-base leading-relaxed text-warm-text question-description">
+                                            青年群体的感官沉浸、情感沉浸、思维沉浸如何被激发并转化为出游意愿？
+                                        </p>
+                                        <div class="mt-6 pt-4 border-t border-pink-light/30 question-footer">
+                                            <span class="text-sm text-pink-dark font-medium question-tag-text">学术探讨</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Question Card 3 -->
+                            <div class="bg-secondary rounded-lg p-8 shadow-md hover:shadow-lg transition-shadow duration-300 question-card-elegant">
+                                <div class="flex items-start gap-4 question-content-wrapper">
+                                    <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center question-number-circle">
+                                        <span class="text-white font-bold text-lg">03</span>
+                                    </div>
+                                    <div class="flex-1 question-text-content">
+                                        <h3 class="text-xl font-bold text-warm-heading mb-4 question-title-text">空间生产吸引逻辑</h3>
+                                        <p class="text-base leading-relaxed text-warm-text question-description">
+                                            沉浸式景区如何通过物理空间、社会空间、体验空间的生产吸引青年游客？
+                                        </p>
+                                        <div class="mt-6 pt-4 border-t border-accent/20 question-footer">
+                                            <span class="text-sm text-accent font-medium question-tag-text">实践路径</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Content Preview - Gallery Style Cards -->
+                <section class="featured-section-elegant py-20 px-4 bg-secondary">
+                    <div class="max-w-7xl mx-auto">
+                        <!-- Section Title -->
+                        <div class="text-center mb-16 section-header-decorated">
+                            <h2 class="text-3xl md:text-4xl font-bold text-warm-heading mb-3 section-title-elegant">精选内容</h2>
+                            <div class="flex justify-center items-center space-x-3 title-decoration">
+                                <div class="w-16 h-px bg-pink-light"></div>
+                                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                </svg>
+                                <div class="w-16 h-px bg-primary"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 featured-grid-elegant">
+                            
+                            <!-- Case Study Preview Card -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group featured-card-elegant" @click="currentPage = 'cases'">
+                                <div class="relative h-56 overflow-hidden featured-image-container">
+                                    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&h=400&fit=crop" 
+                                         alt="Henan Tourism Cases" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 featured-image-item">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent featured-image-overlay"></div>
+                                    <div class="absolute bottom-4 left-4">
+                                        <span class="inline-block px-3 py-1 bg-pink-light/90 text-warm-heading text-xs font-medium rounded-full featured-label">案例库</span>
+                                    </div>
+                                </div>
+                                <div class="p-6 featured-content-body">
+                                    <h3 class="text-lg font-semibold text-warm-heading mb-2 group-hover:text-accent transition-colors featured-card-title">河南沉浸式景区案例</h3>
+                                    <p class="text-sm text-warm-text opacity-75 line-clamp-2 featured-card-desc">只有河南、清明上河园等景区的沉浸体验评估...</p>
+                                    <div class="mt-4 flex items-center text-xs text-accent font-medium featured-link-area">
+                                        <span>查看详情</span>
+                                        <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Data Preview Card -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group featured-card-elegant" @click="currentPage = 'data'">
+                                <div class="relative h-56 overflow-hidden featured-image-container">
+                                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" 
+                                         alt="Youth Tourism Data" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 featured-image-item">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent featured-image-overlay"></div>
+                                    <div class="absolute bottom-4 left-4">
+                                        <span class="inline-block px-3 py-1 bg-accent text-white text-xs font-medium rounded-full featured-label">学术数据</span>
+                                    </div>
+                                </div>
+                                <div class="p-6 featured-content-body">
+                                    <h3 class="text-lg font-semibold text-warm-heading mb-2 group-hover:text-accent transition-colors featured-card-title">青年旅游消费趋势数据</h3>
+                                    <p class="text-sm text-warm-text opacity-75 line-clamp-2 featured-card-desc">55.3%青年偏好沉浸式慢游，85%为35岁以下...</p>
+                                    <div class="mt-4 flex items-center text-xs text-accent font-medium featured-link-area">
+                                        <span>查看数据</span>
+                                        <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Topics Preview Card -->
+                            <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group featured-card-elegant" @click="currentPage = 'topics'">
+                                <div class="relative h-56 overflow-hidden featured-image-container">
+                                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop" 
+                                         alt="Immersive Experience Theory" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 featured-image-item">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent featured-image-overlay"></div>
+                                    <div class="absolute bottom-4 left-4">
+                                        <span class="inline-block px-3 py-1 bg-primary/90 text-warm-heading text-xs font-medium rounded-full featured-label">核心议题</span>
+                                    </div>
+                                </div>
+                                <div class="p-6 featured-content-body">
+                                    <h3 class="text-lg font-semibold text-warm-heading mb-2 group-hover:text-accent transition-colors featured-card-title">三重理论逻辑解析</h3>
+                                    <p class="text-sm text-warm-text opacity-75 line-clamp-2 featured-card-desc">空间生产、沉浸递进与认同驱动机制...</p>
+                                    <div class="mt-4 flex items-center text-xs text-accent font-medium featured-link-area">
+                                        <span>阅读更多</span>
+                                        <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Inspirational Quote Section with Background Image -->
+                <section class="quote-section-elegant relative py-24 px-4 overflow-hidden">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1600&h=600&fit=crop" 
+                             alt="Inspiration" 
+                             class="w-full h-full object-cover quote-bg-image">
+                        <div class="absolute inset-0 bg-accent/80 backdrop-blur-sm quote-overlay"></div>
+                    </div>
+                    
+                    <div class="relative z-10 max-w-4xl mx-auto text-center quote-content">
+                        <svg class="w-12 h-12 text-primary mx-auto mb-6 quote-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                        </svg>
+                        <blockquote class="text-2xl md:text-3xl font-medium text-white leading-relaxed mb-6 quote-text">
+                            "沉浸式旅游不仅改变青年的旅行方式，更重塑他们的文化认同与身份建构"
+                        </blockquote>
+                        <cite class="text-white/90 text-base not-italic quote-author">—— 学术研究启示</cite>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Topics Page -->
+            <div v-if="currentPage === 'topics'" class="topics-page">
+                
+                <!-- Page Banner with Background Image -->
+                <section class="page-banner-topics relative py-24 px-4 overflow-hidden page-banner-styled">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&h=500&fit=crop" 
+                             alt="Topics Banner" 
+                             class="w-full h-full object-cover banner-bg-image">
+                        <div class="absolute inset-0 bg-gradient-to-r from-accent/85 to-primary/75 banner-overlay"></div>
+                    </div>
+                    
+                    <div class="relative z-10 max-w-4xl mx-auto text-center banner-content">
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 banner-title">核心议题</h1>
+                        <p class="text-lg text-white/90 banner-subtitle">当代青年特征、河南景区发展与三重理论逻辑解析</p>
+                    </div>
+                </section>
+
+                <!-- Topics Content -->
+                <section class="topics-content-section py-20 px-4 bg-white topics-container">
+                    <div class="max-w-6xl mx-auto">
+                        
+                        <!-- Topic 1 -->
+                        <div class="mb-16 topic-item-elegant">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center topic-grid-layout">
+                                <div class="topic-image-side">
+                                    <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=700&h=500&fit=crop" 
+                                         alt="Youth Tourism Characteristics" 
+                                         class="rounded-lg shadow-lg w-full topic-image-item">
+                                </div>
+                                <div class="topic-text-side">
+                                    <div class="mb-4 topic-number-badge">
+                                        <span class="inline-flex items-center px-4 py-2 bg-pink-light/30 text-warm-heading text-sm font-semibold rounded-full">议题一</span>
+                                    </div>
+                                    <h2 class="text-2xl md:text-3xl font-bold text-warm-heading mb-4 topic-title-text">当代青年文旅消费特征</h2>
+                                    <p class="text-base leading-loose text-warm-text mb-6 topic-description">
+                                        当代青年群体在文旅消费中呈现出鲜明的特征：重参与互动，追求深度体验而非被动观光；重情感价值，关注情绪获得与心理满足；重叙事代入，偏好有故事性的沉浸场景；重社交传播，乐于通过社交媒体分享体验；重意义获得，寻求旅行中的自我发现与价值认同。这些特征构成了理解沉浸式旅游吸引力的基础。
+                                    </p>
+                                    
+                                    <div class="bg-secondary p-6 rounded-lg border-l-4 border-pink-light topic-quote-box">
+                                        <p class="text-warm-text italic text-sm leading-relaxed topic-quote-text">
+                                            "55.3%的青年偏好沉浸式慢游体验，青年已成为沉浸式消费的主力军"
+                                        </p>
+                                        <p class="text-xs text-warm-text opacity-70 mt-2 topic-quote-source">—— 中国青年报《2025中国青年旅游观察报告》</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Topic 2 -->
+                        <div class="mb-16 topic-item-elegant">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center topic-grid-layout-reverse">
+                                <div class="topic-text-side order-2 lg:order-1">
+                                    <div class="mb-4 topic-number-badge">
+                                        <span class="inline-flex items-center px-4 py-2 bg-primary/30 text-warm-heading text-sm font-semibold rounded-full">议题二</span>
+                                    </div>
+                                    <h2 class="text-2xl md:text-3xl font-bold text-warm-heading mb-4 topic-title-text">河南沉浸式景区发展特征</h2>
+                                    <p class="text-base leading-loose text-warm-text mb-6 topic-description">
+                                        河南省作为中华文明的重要发源地，其沉浸式景区发展呈现出独特特征：以演艺为核心驱动力，通过大型实景演出和戏剧幻城打造标志性产品；以空间为载体，将历史文化资源转化为可体验的空间场景；以文化为灵魂，深挖中原文化、黄河文明等核心IP；以青年为主体目标客群，产品设计、营销推广均围绕青年群体的审美与需求展开。
+                                    </p>
+                                    
+                                    <div class="bg-secondary p-6 rounded-lg border-l-4 border-accent topic-quote-box">
+                                        <p class="text-warm-text italic text-sm leading-relaxed topic-quote-text">
+                                            "沉浸式演艺游客中85%为35岁以下青年群体，成为文旅消费新主力"
+                                        </p>
+                                        <p class="text-xs text-warm-text opacity-70 mt-2 topic-quote-source">—— 中国旅游演艺发展报告</p>
+                                    </div>
+                                </div>
+                                <div class="topic-image-side order-1 lg:order-2">
+                                    <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=700&h=500&fit=crop" 
+                                         alt="Henan Immersive Scenic Spots" 
+                                         class="rounded-lg shadow-lg w-full topic-image-item">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Topic 3 -->
+                        <div class="topic-item-elegant">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center topic-grid-layout">
+                                <div class="topic-image-side">
+                                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=700&h=500&fit=crop" 
+                                         alt="Theoretical Logic" 
+                                         class="rounded-lg shadow-lg w-full topic-image-item">
+                                </div>
+                                <div class="topic-text-side">
+                                    <div class="mb-4 topic-number-badge">
+                                        <span class="inline-flex items-center px-4 py-2 bg-accent/20 text-warm-heading text-sm font-semibold rounded-full">议题三</span>
+                                    </div>
+                                    <h2 class="text-2xl md:text-3xl font-bold text-warm-heading mb-4 topic-title-text">沉浸式吸引青年的三重理论逻辑</h2>
+                                    <p class="text-base leading-loose text-warm-text mb-6 topic-description">
+                                        沉浸式旅游对青年的吸引力可通过三重理论逻辑解析：<strong>空间生产逻辑</strong>强调物理空间（场景、舞台、技术）、社会空间（文化叙事、符号）、体验空间（感官、情感、思维）的三元联动；<strong>沉浸递进逻辑</strong>揭示从感官沉浸到情感沉浸再到思维沉浸的三层级体验升级；<strong>认同驱动逻辑</strong>阐释从景观认同到文化认同再到身份认同最终转化为出游意愿的心理路径。三者共同构成完整的理论解释框架。
+                                    </p>
+                                    
+                                    <div class="bg-secondary p-6 rounded-lg border-l-4 border-primary topic-quote-box">
+                                        <p class="text-warm-text italic text-sm leading-relaxed topic-quote-text">
+                                            "超90%Z世代愿为沉浸式体验跨城出行，单票带动10倍综合消费"
+                                        </p>
+                                        <p class="text-xs text-warm-text opacity-70 mt-2 topic-quote-source">—— 央视网、深蓝智库</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- Cases Page -->
+            <div v-if="currentPage === 'cases'" class="cases-page">
+                
+                <!-- Page Banner -->
+                <section class="page-banner-cases relative py-24 px-4 overflow-hidden page-banner-styled">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&h=500&fit=crop" 
+                             alt="Cases Banner" 
+                             class="w-full h-full object-cover banner-bg-image">
+                        <div class="absolute inset-0 bg-gradient-to-r from-pink-light/85 to-accent/75 banner-overlay"></div>
+                    </div>
+                    
+                    <div class="relative z-10 max-w-4xl mx-auto text-center banner-content">
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 banner-title">案例评估库</h1>
+                        <p class="text-lg text-white/90 banner-subtitle">河南沉浸式景区案例的深度分析与多维度评估</p>
+                    </div>
+                </section>
+
+                <!-- Cases Content with Filter -->
+                <section class="cases-content-section py-20 px-4 bg-secondary cases-container">
+                    <div class="max-w-7xl mx-auto">
+                        
+                        <!-- Filter Buttons -->
+                        <div class="flex flex-wrap justify-center gap-3 mb-12 filter-buttons-container">
+                            <button v-for="category in caseCategories"
+                                    :key="category.id"
+                                    @click="selectedCategory = category.id"
+                                    :class="[
+                                        'px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 filter-button',
+                                        selectedCategory === category.id 
+                                            ? 'bg-accent text-white shadow-md' 
+                                            : 'bg-white text-warm-heading hover:bg-primary/20'
+                                    ]">
+                                {{ category.icon }} {{ category.name }}
+                            </button>
+                        </div>
+
+                        <!-- Cases Grid -->
+                        <div class="space-y-12 cases-grid-list">
+                            
+                            <div v-for="(caseStudy, index) in filteredCases" 
+                                 :key="index"
+                                 class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 case-card-elegant">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 case-card-grid">
+                                    <!-- Case Image -->
+                                    <div class="relative h-64 lg:h-auto case-image-container">
+                                        <img :src="caseStudy.image" 
+                                             :alt="caseStudy.title" 
+                                             class="w-full h-full object-cover case-image-item">
+                                        <div class="absolute top-4 left-4 case-category-badge">
+                                            <span :class="[
+                                                'inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full',
+                                                caseStudy.category === '文化体验' ? 'bg-pink-light/90 text-warm-heading' :
+                                                caseStudy.category === '自然体验' ? 'bg-primary/90 text-warm-heading' :
+                                                'bg-accent/90 text-white'
+                                            ]">
+                                                {{ caseStudy.categoryIcon }} {{ caseStudy.category }}
+                                            </span>
+                                        </div>
+                                        <div class="absolute top-4 right-4 case-year-badge">
+                                            <span class="inline-flex items-center px-3 py-1 bg-black/60 text-white text-xs rounded-full">
+                                                {{ caseStudy.year }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Case Content -->
+                                    <div class="p-8 case-content-body">
+                                        <h3 class="text-xl font-bold text-warm-heading mb-4 case-title-text">{{ caseStudy.title }}</h3>
+                                        
+                                        <div class="mb-6 case-summary-section">
+                                            <h4 class="text-sm font-semibold text-accent uppercase tracking-wider mb-2 case-section-label">故事摘要</h4>
+                                            <p class="text-sm leading-loose text-warm-text case-summary-text">{{ caseStudy.summary }}</p>
+                                        </div>
+                                        
+                                        <div class="mb-6 case-insight-section">
+                                            <h4 class="text-sm font-semibold text-accent uppercase tracking-wider mb-2 case-section-label">学术启示</h4>
+                                            <p class="text-sm leading-loose text-warm-text italic bg-secondary p-4 rounded case-insight-text">{{ caseStudy.insight }}</p>
+                                        </div>
+                                        
+                                        <div class="pt-4 border-t border-gray-100 case-source-section">
+                                            <p class="text-xs text-warm-text opacity-70 case-source-text">
+                                                <span class="font-semibold">来源：</span>{{ caseStudy.source }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Data Page -->
+            <div v-if="currentPage === 'data'" class="data-page">
+                
+                <!-- Page Banner -->
+                <section class="page-banner-data relative py-24 px-4 overflow-hidden page-banner-styled">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&h=500&fit=crop" 
+                             alt="Data Banner" 
+                             class="w-full h-full object-cover banner-bg-image">
+                        <div class="absolute inset-0 bg-gradient-to-r from-accent/85 to-pink-light/75 banner-overlay"></div>
+                    </div>
+                    
+                    <div class="relative z-10 max-w-4xl mx-auto text-center banner-content">
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 banner-title">学术数据</h1>
+                        <p class="text-lg text-white/90 banner-subtitle">青年旅游消费趋势与沉浸式体验影响力分析</p>
+                    </div>
+                </section>
+
+                <!-- Data Content -->
+                <section class="data-content-section py-20 px-4 bg-white data-container">
+                    <div class="max-w-6xl mx-auto">
+                        
+                        <!-- Stats Overview -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 stats-grid-overview">
+                            <div class="bg-secondary rounded-lg p-6 text-center stat-card-elegant">
+                                <div class="text-3xl font-bold text-accent mb-2 stat-number">55.3%</div>
+                                <div class="text-sm text-warm-text stat-label">青年偏好沉浸式慢游</div>
+                            </div>
+                            <div class="bg-secondary rounded-lg p-6 text-center stat-card-elegant">
+                                <div class="text-3xl font-bold text-pink-dark mb-2 stat-number">85%</div>
+                                <div class="text-sm text-warm-text stat-label">沉浸演艺游客为35岁以下</div>
+                            </div>
+                            <div class="bg-secondary rounded-lg p-6 text-center stat-card-elegant">
+                                <div class="text-3xl font-bold text-accent mb-2 stat-number">90%+</div>
+                                <div class="text-sm text-warm-text stat-label">Z世代愿跨城体验</div>
+                            </div>
+                            <div class="bg-secondary rounded-lg p-6 text-center stat-card-elegant">
+                                <div class="text-3xl font-bold text-pink-dark mb-2 stat-number">10倍</div>
+                                <div class="text-sm text-warm-text stat-label">单票带动综合消费</div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 1: Youth Immersive Tourism Preference -->
+                        <div class="mb-16 chart-section-elegant">
+                            <div class="bg-secondary rounded-lg p-8 chart-card">
+                                <div class="mb-6 chart-header">
+                                    <h3 class="text-2xl font-bold text-warm-heading chart-title">青年群体沉浸式旅游偏好与消费特征</h3>
+                                    <p class="text-sm text-warm-text mt-2 chart-subtitle">数据来源：中国青年报《2025中国青年旅游观察报告》、中国旅游演艺发展报告</p>
+                                </div>
+                                <div class="chart-canvas-container">
+                                    <canvas id="consumptionChart" width="400" height="200"></canvas>
+                                </div>
+                                <div class="mt-6 pt-6 border-t border-primary/20 chart-analysis">
+                                    <h4 class="text-sm font-semibold text-accent mb-2 analysis-label">数据解读：</h4>
+                                    <p class="text-sm leading-loose text-warm-text analysis-text">
+                                        数据显示，55.3%的青年群体明确表示偏好沉浸式慢游体验，青年已成为沉浸式消费的绝对主力。在沉浸式演艺游客中，85%为35岁以下的年轻群体，这一比例远超其他年龄段。更值得关注的是，超过90%的Z世代（95后、00后）表示愿意为优质的沉浸式体验进行跨城出行，且单张门票平均可带动10倍的综合消费（包括住宿、餐饮、文创等）。这表明沉浸式旅游不仅具有强大的吸引力，更具备显著的经济带动效应。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Immersive Experience Impact -->
+                        <div class="chart-section-elegant">
+                            <div class="bg-secondary rounded-lg p-8 chart-card">
+                                <div class="mb-6 chart-header">
+                                    <h3 class="text-2xl font-bold text-warm-heading chart-title">沉浸式体验对游客行为的影响效应</h3>
+                                    <p class="text-sm text-warm-text mt-2 chart-subtitle">数据来源：知网李万莲、王强、施思等相关文献研究</p>
+                                </div>
+                                <div class="chart-canvas-container">
+                                    <canvas id="durationChart" width="400" height="200"></canvas>
+                                </div>
+                                <div class="mt-6 pt-6 border-t border-pink-light/30 chart-analysis">
+                                    <h4 class="text-sm font-semibold text-pink-dark mb-2 analysis-label">数据解读：</h4>
+                                    <p class="text-sm leading-loose text-warm-text analysis-text">
+                                        学术研究表明，沉浸式体验对游客行为具有显著的正向影响。在重游意愿方面，沉浸式景区的游客重游率较传统景区提升35%-50%；在推荐率方面，超过78%的沉浸式体验游客表示会向亲友主动推荐；在文化认同度方面，参与深度沉浸体验的游客对目的地文化的认同感平均提升40%以上。这些数据充分证明，沉浸式旅游不仅能够创造即时的感官愉悦，更能形成持久的文化记忆与情感联结，从而转化为持续的重游行为与口碑传播。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- References Page -->
+            <div v-if="currentPage === 'references'" class="references-page">
+                
+                <!-- Page Banner -->
+                <section class="page-banner-references relative py-24 px-4 overflow-hidden page-banner-styled">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1600&h=500&fit=crop" 
+                             alt="References Banner" 
+                             class="w-full h-full object-cover banner-bg-image">
+                        <div class="absolute inset-0 bg-gradient-to-r from-primary/85 to-accent/75 banner-overlay"></div>
+                    </div>
+                    
+                    <div class="relative z-10 max-w-4xl mx-auto text-center banner-content">
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 banner-title">参考资料</h1>
+                        <p class="text-lg text-white/90 banner-subtitle">权威学术文献、官方报告与研究资料汇编</p>
+                    </div>
+                </section>
+
+                <!-- References List -->
+                <section class="references-content-section py-20 px-4 bg-secondary references-container">
+                    <div class="max-w-4xl mx-auto">
+                        
+                        <div class="space-y-6 references-list">
+                            
+                            <div v-for="(ref, index) in references" 
+                                 :key="index"
+                                 class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300 reference-card-elegant">
+                                <div class="flex items-start gap-4 reference-card-layout">
+                                    <div class="flex-shrink-0 reference-icon-wrapper">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center reference-number-circle">
+                                            <span class="text-white font-bold">{{ index + 1 }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 reference-content-body">
+                                        <div class="flex items-center gap-2 mb-2 reference-type-row">
+                                            <span class="text-xs px-2 py-1 bg-pink-light/30 text-warm-heading rounded reference-type-badge">{{ ref.type }}</span>
+                                            <span class="text-xs text-warm-text opacity-70 reference-year-badge">{{ ref.year }}</span>
+                                        </div>
+                                        <h3 class="text-lg font-semibold text-warm-heading mb-2 reference-title-text">{{ ref.title }}</h3>
+                                        <p class="text-sm text-warm-text mb-3 reference-author-text">
+                                            <span class="font-medium">作者：</span>{{ ref.authors }}
+                                        </p>
+                                        <p class="text-sm text-warm-text mb-4 reference-source-text">
+                                            <span class="font-medium">来源：</span>{{ ref.source }}
+                                        </p>
+                                        <a :href="ref.link" 
+                                           class="inline-flex items-center text-sm text-accent hover:text-pink-dark font-medium transition-colors reference-link-button">
+                                            查看详情
+                                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- About Page -->
+            <div v-if="currentPage === 'about'" class="about-page">
+                
+                <!-- Page Banner -->
+                <section class="page-banner-about relative py-24 px-4 overflow-hidden page-banner-styled">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&h=500&fit=crop" 
+                             alt="About Banner" 
+                             class="w-full h-full object-cover banner-bg-image">
+                        <div class="absolute inset-0 bg-gradient-to-r from-accent/85 to-primary/75 banner-overlay"></div>
+                    </div>
+                    
+                    <div class="relative z-10 max-w-4xl mx-auto text-center banner-content">
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 banner-title">关于本站</h1>
+                        <p class="text-lg text-white/90 banner-subtitle">了解沉浸式旅游体验研究的愿景与使命</p>
+                    </div>
+                </section>
+
+                <!-- About Content -->
+                <section class="about-content-section py-20 px-4 bg-white about-container">
+                    <div class="max-w-6xl mx-auto">
+                        
+                        <!-- Main About Card -->
+                        <div class="bg-secondary rounded-lg overflow-hidden shadow-lg mb-16 about-main-card">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 about-card-grid">
+                                <!-- Image Side -->
+                                <div class="about-image-side">
+                                    <img src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&h=600&fit=crop" 
+                                         alt="Research Team" 
+                                         class="w-full h-full object-cover about-image-item">
+                                </div>
+                                
+                                <!-- Text Side -->
+                                <div class="p-10 about-text-side">
+                                    <h2 class="text-2xl md:text-3xl font-bold text-warm-heading mb-6 about-title">平台简介</h2>
+                                    <div class="space-y-4 about-text-content">
+                                        <p class="text-base leading-loose text-warm-text about-paragraph">
+                                            本网站是一个专注于沉浸式旅游体验与当代青年吸引力研究的学术平台，以河南省各类主题景区为实证场景，系统整合空间生产理论、沉浸体验机制与青年认同研究。
+                                        </p>
+                                        <p class="text-base leading-loose text-warm-text about-paragraph">
+                                            我们关注当代青年文旅消费特征、河南沉浸式景区发展模式、以及空间生产、沉浸递进、认同驱动三重理论逻辑，通过真实案例评估、学术数据分析与权威文献支撑，为文旅研究与地方发展提供有价值的参考资源。
+                                        </p>
+                                        <p class="text-base leading-loose text-warm-text about-paragraph">
+                                            平台依托知网、官方报告、主流媒体等多元数据源，采用现代化的技术架构，结合Vue3响应式框架与Tailwind CSS样式系统，确保优秀的用户体验与学术严谨性的统一。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tech Stack -->
+                        <div class="mb-16 tech-stack-section">
+                            <div class="text-center mb-10 section-header-simple">
+                                <h3 class="text-2xl font-bold text-warm-heading simple-section-title">技术栈</h3>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 tech-stack-grid">
+                                <div class="bg-secondary rounded-lg p-6 text-center tech-card">
+                                    <div class="text-3xl font-bold text-accent mb-2 tech-name">Vue 3</div>
+                                    <div class="text-sm text-warm-text tech-desc">前端框架</div>
+                                </div>
+                                <div class="bg-secondary rounded-lg p-6 text-center tech-card">
+                                    <div class="text-3xl font-bold text-pink-dark mb-2 tech-name">Tailwind</div>
+                                    <div class="text-sm text-warm-text tech-desc">CSS框架</div>
+                                </div>
+                                <div class="bg-secondary rounded-lg p-6 text-center tech-card">
+                                    <div class="text-3xl font-bold text-accent mb-2 tech-name">Chart.js</div>
+                                    <div class="text-sm text-warm-text tech-desc">数据可视化</div>
+                                </div>
+                                <div class="bg-secondary rounded-lg p-6 text-center tech-card">
+                                    <div class="text-3xl font-bold text-pink-dark mb-2 tech-name">CDN</div>
+                                    <div class="text-sm text-warm-text tech-desc">快速部署</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="bg-secondary rounded-lg p-8 contact-info-card">
+                            <h3 class="text-xl font-bold text-warm-heading mb-6 contact-title">联系我们</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 contact-grid">
+                                <div class="contact-item">
+                                    <p class="text-sm text-warm-text mb-1 contact-label">电子邮箱</p>
+                                    <p class="text-base text-warm-heading font-medium contact-value">research@travel-experience.edu</p>
+                                </div>
+                                <div class="contact-item">
+                                    <p class="text-sm text-warm-text mb-1 contact-label">研究方向</p>
+                                    <p class="text-base text-warm-heading font-medium contact-value">沉浸式旅游 / 青年研究 / 空间生产</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer-elegant bg-warm-heading text-white py-12 px-4 footer-container">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 footer-grid">
+                    <div class="footer-column">
+                        <h4 class="text-lg font-bold mb-4 footer-title">沉浸式旅游研究</h4>
+                        <p class="text-sm text-white/80 leading-relaxed footer-text">
+                            探索沉浸式旅游体验对当代青年的吸引力机制，促进学术交流与知识共享
+                        </p>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="text-lg font-bold mb-4 footer-title">快速链接</h4>
+                        <ul class="space-y-2 footer-links">
+                            <li><a @click="currentPage = 'topics'" class="text-sm text-white/80 hover:text-primary transition-colors cursor-pointer footer-link">核心议题</a></li>
+                            <li><a @click="currentPage = 'cases'" class="text-sm text-white/80 hover:text-primary transition-colors cursor-pointer footer-link">案例库</a></li>
+                            <li><a @click="currentPage = 'data'" class="text-sm text-white/80 hover:text-primary transition-colors cursor-pointer footer-link">学术数据</a></li>
+                            <li><a @click="currentPage = 'references'" class="text-sm text-white/80 hover:text-primary transition-colors cursor-pointer footer-link">参考资料</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4 class="text-lg font-bold mb-4 footer-title">版权信息</h4>
+                        <p class="text-sm text-white/80 footer-copyright">
+                            © 2026 沉浸式旅游体验研究平台<br>
+                            学术研究用途 | 保留所有权利
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-white/20 text-center footer-bottom">
+                    <p class="text-xs text-white/60 footer-note">基于 VibeCoding 设计理念 · 春日调色盘配色方案</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Application Script -->
+    <script src="js/app.js"></script>
+</body>
+</html>
